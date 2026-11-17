@@ -1,2 +1,1 @@
-def hello() -> str:
-    return "Hello from ideaforge!"
+from ideaforge import defaults  # noqa: F401  (registers the built-in components)
