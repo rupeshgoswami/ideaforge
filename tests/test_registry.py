@@ -58,3 +58,7 @@ def test_builtin_components_are_registered_on_import() -> None:
     assert ideaforge is not None
     assert "fake" in llm_clients.names()
     assert "fake" in embedders.names()
+
+def test_entry_point_plugin_is_discovered() -> None:
+    assert "shouting" in llm_clients.names()
+    assert llm_clients.create("shouting").complete("hi") == "HI"

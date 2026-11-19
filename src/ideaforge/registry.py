@@ -4,6 +4,7 @@ from collections.abc import Callable
 
 from ideaforge.interfaces import Embedder, Retriever, Tool
 from ideaforge.llm import LLMClient
+from importlib.metadata import entry_points
 
 
 class Registry[T]:
@@ -30,6 +31,18 @@ class Registry[T]:
     def names(self) -> list[str]:
         """Return registered names, sorted."""
         return sorted(self._factories)
+    def load_plugins() -> None:
+        """Register components that installed packages declare as entry points."""
+        groups = {
+            "ideaforge.llm_clients": llm_clients,
+            "ideaforge.embedders": embedders,
+            "ideaforge.retrievers": retrievers,
+            "ideaforge.tools": tools,
+        }
+        for group, registry in groups.items():
+            for entry in entry_points(group=group):
+                if entry.name not in registry.names():
+                    registry.register(entry.name, entry.load())
 
 
 llm_clients = Registry[LLMClient]("llm_client")

@@ -41,3 +41,6 @@ explicit_package_bases = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[project.entry-points."ideaforge.llm_clients"]
+shouting = "ideaforge.examples:ShoutingClient"
